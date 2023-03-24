@@ -98,7 +98,9 @@
   > npx： 第三方可执行文件的执行工具
     >> 可执行当前项目中 node_modules/.bin目录下的可执行文件
 
-## html绑定（数据绑定）
+## 绑定
+
+### html绑定（数据绑定）
 插值语法
 
 + 支持常用js的表达式
@@ -117,4 +119,18 @@
   - 自增和自减运算符：++ 和 --
   - JSON
   - 一些 ES2015+ 版本的运算符
+  
   *详见 https://angular.cn/guide/binding-overview#no-visible-side-effects*
+
+### 属性绑定
++ 原生属性的绑定方法
+  ```
+  1. <p class="btn-num" title="{{count}}">{{ count }}</p>
+  2. <p class="btn-num" [title]="count">{{ count }}</p>
+  ```
+  
+
+### 事件绑定
+ ```
+<button (click)="handleCount()">+</button>
+ ```
