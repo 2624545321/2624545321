@@ -1,0 +1,5 @@
+<button *ngIf="count > 0"  (click)="handleCount('minus')">-</button>
+
+<p class="btn-num" [title]="count">{{ count }}</p>
+
+<button [disabled]="count > 10" (click)="handleCount('add')">+</button>

@@ -4,15 +4,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { OwnComponent } from 'src/component/own/ownComponent';
 import { MyComponent } from './component/myCom/myComponent.component';
+import { BtnCountComponent } from './component/btn-count/btn-count.component';
+
+// elementUi
+// import { ElModule } from 'element-angular'
 
 @NgModule({
   declarations: [
     AppComponent,
     OwnComponent,
-    MyComponent
+    MyComponent,
+    BtnCountComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    // ElModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
