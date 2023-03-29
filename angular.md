@@ -123,7 +123,7 @@
   *详见 https://angular.cn/guide/binding-overview#no-visible-side-effects*
 
 ### 属性绑定
-+ 原生属性的绑定方法
++ 属性为变量时的绑定方法
   ```
   1. <p class="btn-num" title="{{count}}">{{ count }}</p>
   2. <p class="btn-num" [title]="count">{{ count }}</p>
@@ -134,3 +134,101 @@
  ```
 <button (click)="handleCount()">+</button>
  ```
++ 函数必须有 **()**
+
+### 指令绑定
+
+  #### *ngIf
+  
+  - 默认写法
+    ```
+    <div *ngIf="condition"></div>
+    ```
+  - else
+    ```
+      <div *ngIf="condition; else elseBlock"></div>
+    ```  
+  - then => 为 true 时内容显示区域
+    ```
+      <div *ngIf="condition; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>Content true</ng-template>
+      <ng-template #elseBlock>Content false.</ng-template>
+    ```  
+  - as 本地存储值的形式: condition的值赋值给 value
+    ```
+      <div *ngIf="condition as value; else elseBlock">{{value}}</div>
+      <ng-template #elseBlock>Content to render when value is null.</ng-template>
+    ```
+
+ *condition为 false 元素直接在dom中移除* 
+
+#### *ngFor
+```
+ <!-- <li *ngFor="let item of list; index as i"> -->
+  <li *ngFor="let item of list; let i = index">
+    {{ i + 1 }} {{ item }}
+  </li>
+```
+
+#### ngStyle
+
+```
+<some-element [ngStyle]="{'font-style': styleExp}">...</some-element>
+
+<some-element [ngStyle]="objExp">...</some-element>
+```
+
+#### ngClass
++ CSS 类会根据表达式求值结果进行更新，更新逻辑取决于结果的类型
+ 
++ string - 会把列在字符串中的 CSS 类（空格分隔）添加进来，
+
++ Array - 会把数组中的各个元素作为 CSS 类添加进来，
+
++ Object - 每个 key 都是要处理的 CSS 类，当表达式求值为真的时候则添加，为假则移除。
+
+ ```
+  <some-element [ngClass]="'first second'">...</some-element>
+
+  <some-element [ngClass]="['first', 'second']">...</some-element>
+
+  <some-element [ngClass]="{'first': true, 'second': true, 'third': false}">...</some-element>
+
+  <some-element [ngClass]="stringExp|arrayExp|objExp">...</some-element>
+
+  <some-element [ngClass]="{'class1 class2 class3' : true}">...</some-element>
+
+ ```
+
+#### ngSwitch
+```
+<container-element [ngSwitch]="switch_expression">
+  <!-- the same view can be shown in more than one case -->
+  <some-element *ngSwitchCase="match_expression_1">...</some-element>
+  <some-element *ngSwitchCase="match_expression_2">...</some-element>
+  <some-other-element *ngSwitchCase="match_expression_3">...</some-other-element>
+  <!--default case when there are no matches -->
+  <some-element *ngSwitchDefault>...</some-element>
+</container-element>
+
+```
+
+## 双向数据绑定 [(ngModel)]
+
++ mvvm
+
+1. modle => view 模型数据流向视图
+2. view => model 视图（表单元素）数据流向模型
+
+```
+ <input [(ngModel)]="name"
+```
+
+3. 使用时，需要导入该模块
+```
+import { FormsModule } from '@angular/forms';
+
+imports: [
+  FormsModule
+],
+```

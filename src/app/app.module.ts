@@ -1,24 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { OwnComponent } from 'src/component/own/ownComponent';
 import { MyComponent } from './component/myCom/myComponent.component';
 import { BtnCountComponent } from './component/btn-count/btn-count.component';
+import { DirectiveComponent } from './component/directive/directive.component';
 
-// elementUi
-// import { ElModule } from 'element-angular'
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    OwnComponent,
     MyComponent,
-    BtnCountComponent
+    BtnCountComponent,
+    DirectiveComponent
   ],
   imports: [
+    // 浏览器模块导出了 CommonModule，所以指令模块可以使用
     BrowserModule,
-    // ElModule.forRoot(),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
