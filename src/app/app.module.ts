@@ -22,6 +22,7 @@ import './../mock/home.js'
     AppFooterComponent,
   ],
   imports: [
+    // 浏览器模块导出了 CommonModule，所以指令模块可以使用
     BrowserModule,
     ElModule.forRoot(), // element
     // 各个子模块
