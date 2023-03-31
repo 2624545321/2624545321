@@ -67,8 +67,8 @@
   我是一个小盒子
 </div>
 
-<input type="text" [(ngModel)]="myIpt">
-<p>{{ myIpt }}</p>
+<input type="text" [(ngModel)]="myIpt" (ngModelChange)="handleIpt()">
+<p [ngClass]="tipClass">{{ myIpt }}: {{ tipsText }}</p>
 
 <!-- 表单绑定 -->
 <form action="" #f="ngForm" (ngSubmit)="onSubmit(f)">
@@ -85,3 +85,16 @@
 <p>First name valid: {{ iptVal.valid }}</p>
 <p>Form value: {{ f.value | json }}</p>
 <p>Form valid: {{ f.valid }}</p>
+
+
+<div appNeedStrong>
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe accusantium eius dolor cum accusamus consequatur hic, quas illum aliquid, ipsum nihil odit tempore distinctio iste corrupti maxime, non similique! Dolorem.
+</div>
+
+<div>
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe accusantium eius dolor cum accusamus consequatur hic, quas illum aliquid, ipsum nihil odit tempore distinctio iste corrupti maxime, non similique! Dolorem.
+</div>
+
+<div appNeedStrong>
+  Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe accusantium eius dolor cum accusamus consequatur hic, quas illum aliquid, ipsum nihil odit tempore distinctio iste corrupti maxime, non similique! Dolorem.
+</div>

@@ -3,7 +3,7 @@ import {NgForm} from '@angular/forms';
 @Component({
   selector: 'app-directive',
   templateUrl: './directive.component.html',
-  styleUrls: ['./directive.component.sass']
+  styleUrls: ['./directive.component.scss']
 })
 export class DirectiveComponent {
   list: string[] = [
@@ -46,7 +46,29 @@ export class DirectiveComponent {
   }
 
   myIpt: string = ''
+  tipsText: string = ''
   // iptVal: string = ''
+
+  tipClass = {
+    invalid: !this.isValid(),
+    valid: this.isValid()
+  }
+
+  handleIpt():void {
+    // console.log(this.myIpt)
+    if (this.isValid()) {
+      this.tipClass.valid = true
+      this.tipClass.invalid = false
+    } else {
+      this.tipClass.valid = false
+      this.tipClass.invalid = true
+    }
+  }
+
+  private isValid() {
+    // console.log('我执行力')
+    return (this.myIpt.length > 6 && this.myIpt.length < 12)
+  }
 
   onSubmit(f: NgForm) {
     console.log(f.value);  // { first: '', last: '' }
