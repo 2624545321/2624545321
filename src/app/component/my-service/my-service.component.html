@@ -1,0 +1,45 @@
+<h2>商品列表</h2>
+<button (click)="addGoods()">添加商品</button>
+<button (click)="delGoods()">删除商品</button>
+
+<hr />
+
+<h2>表格数据</h2>
+<button (click)="getTableData()">获取数据</button>
+<button (click)="addTableData()">添加数据</button>
+<input type="text" [(ngModel)]="tableIpt">
+<table>
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>姓名</th>
+      <th>年龄</th>
+      <th>性别</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="tableData.length">
+    <tr 
+      *ngFor="let t of tableData; let i = index"
+    >
+      <td>{{ t.id }}</td>
+      <td>{{ t.name }}</td>
+      <td>{{ t.age }}</td>
+      <td>{{ t.gender | translateGender }}</td>
+    </tr>
+  </tbody>
+  <p *ngIf="isLoading">加载数据中。。。</p>
+  <div *ngIf="!isLoading && !tableData.length">
+    <p>暂无数据</p>
+  </div>
+
+</table>
+
+<hr />
+
+<div>
+  <button (click)="handleLogin()">登录</button>
+  <button (click)="handleRegister()">注册</button>
+
+
+</div>
+

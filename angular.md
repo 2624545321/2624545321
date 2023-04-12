@@ -31,7 +31,12 @@
     |-- tsconfig.app.json
     |-- tsconfig.json
     |-- tsconfig.spec.json
- 
+
+
+## 模块
++ 概述：用于对项目中的大量组/组件/管道/服务等进行分组，每个模块明确自己要实现的功能。如用户模块，商品模块，服务请求模块。
++ 用于对各种ng对象进行分组
+
 ## 自定义组件
 
 ### 1. 创建组件
@@ -67,13 +72,13 @@
   ```
 
 ### 2. 在某个模块中注册组件
-  
+
   ```
   declarations: [
     AppComponent,
     OwnComponent
   ],
-  ```  
+  ```
 ### 格式
   + 组件使用时为了和 html 标签区分，一般写成 [name] - [componentname] 的形式
   + 定义组件文件时一般写成 [name].component.ts|html|css 的写法
@@ -136,8 +141,9 @@
  ```
 + 函数必须有 **()**
 
-### 指令绑定
+## 指令
 
+#### 预定义指令
 #### *ngIf
 
 - 默认写法
@@ -147,13 +153,13 @@
 - else
   ```
     <div *ngIf="condition; else elseBlock"></div>
-  ```  
+  ```
 - then => 为 true 时内容显示区域
   ```
     <div *ngIf="condition; then thenBlock else elseBlock"></div>
     <ng-template #thenBlock>Content true</ng-template>
     <ng-template #elseBlock>Content false.</ng-template>
-  ```  
+  ```
 - as 本地存储值的形式: condition的值赋值给 value
   ```
     <div *ngIf="condition as value; else elseBlock">{{value}}</div>
@@ -180,7 +186,7 @@
 
 #### ngClass
 + CSS 类会根据表达式求值结果进行更新，更新逻辑取决于结果的类型
- 
+
 + string - 会把列在字符串中的 CSS 类（空格分隔）添加进来，
 
 + Array - 会把数组中的各个元素作为 CSS 类添加进来，
@@ -267,7 +273,7 @@ imports: [
 ```
 
 5. 事件监听
-  ngModelChange 在数据更新时触发
+    ngModelChange 在数据更新时触发
 
 
 ## pipe
@@ -303,3 +309,74 @@ export class SuffixPipe {
 
 {{ do.thing | suffixPipe: 'foo' : 'bar' }}
 ```
+
++ 内部预置了一些常用的转换 pipe
+  - *https://angular.cn/api?type=pipe*
+
+
+## 服务和依赖注入
+
++ 创建对象的两种方式
+  1. 手动创建 const o = new Object()
+  2. 依赖注入式 无需自己 new ，只需要声明依赖
+
++ 抽象&重点
+   - Service（服务）：, angular认为；组件是与用户交互的一中对象，其中的内容都应该与用户操作有关系；而与用户操作无关的内容都应该剥离出去，放在‘服务对象’中，为组件服务；例如：系统日志、即使统计、数据服务器的访问
+
++ 创建服务
+
+   - ``` ng g/generate service [name]  ```
+
++ 使用
+  - 创建文件
+  ```
+  import { Injectable } from '@angular/core';
+
+  // 方式一： 在本文件中声明
+  //  创建的服务是‘单例的’，不论多少组件使用，只创建一个实例
+  @Injectable({
+    providedIn: 'root'
+  })
+
+  export class LogService {
+    constructor() { }
+  }
+
+  // 方式二 或者在app.module.ts中
+  providers: [LogService]
+
+  // 方式三 在引入的页面声明
+  //  每个组件的服务对象都是新建的
+  @Injectable()
+
+  @Component({
+    provides: [logService]
+  })
+  ```
+
+  -  在页面中引入使用
+  ```
+  import { LogService } from 'src/app/log/LogService';
+
+  constructor(log: LogService) {
+    this.log = log
+  }
+  ```
+
+### HttpClient
+  + Angular 提供的一个网络访问服务
+  + 也就是数据请求的api，类似于axios
+  + 使用
+    1. 在app.module中引入
+    ```
+    import { HttpClientModule } from '@angular/common/http'
+    
+    imports: [HttpClientModule]
+    ```
+    2. 在使用的地方引入
+    ```
+    import { HttpClient } from '@angular/common/http';
+    constructor(http: HttpClient) {
+      this.http = http
+    }
+    ```
