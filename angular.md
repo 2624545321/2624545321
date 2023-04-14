@@ -43,7 +43,7 @@
   + 一个组件需要的最基础的属性
   + angular的组件以 class 来使用
 
-  ```
+  ```javascript
   <!-- 写在一个文件的写法 -->
   // 1 引入函数
   import { Component } from "@angular/core";
@@ -73,7 +73,7 @@
 
 ### 2. 在某个模块中注册组件
 
-  ```
+  ```javascript
   declarations: [
     AppComponent,
     OwnComponent
@@ -139,7 +139,7 @@
  ```
 <button (click)="handleCount()">+</button>
  ```
-+ 函数必须有 **()**
+*函数必须有 **()***
 
 ## 指令
 
@@ -246,7 +246,7 @@
 ```
 
 3. 使用时，需要导入该模块
-```
+```javascript
 import { FormsModule } from '@angular/forms';
 
 imports: [
@@ -256,18 +256,18 @@ imports: [
 
 4. 
 
-```
+```javascript
   单个输入框绑定
     <input type="text" [(ngModel)]="myIpt">
 
   作为表单元素绑定
     <form action="" #f="ngForm" (ngSubmit)="onSubmit(f)">
-      <input name="ipt" type="text" required ngModel #iptVal="ngModel">
-      <input type="button" value="submit">
+      <input name="ipt1" type="text" required ngModel #iptVal="ngModel">
+      <input name="ipt2" type="text" ngModel #ipt="ngModel">
     </form>
 
     onSubmit(f: NgForm) {
-      console.log(f.value);  // { first: '', last: '' }
+      console.log(f.value);  // { "ipt1": "11111111", "ipt2": "222222" }
       console.log(f.valid);  // false
     }
 ```
@@ -280,11 +280,11 @@ imports: [
 *管道，同vue的过滤器*
 
 + 
-```
+```javascript
 import { Pipe } from "@angular/core"; // 引入装饰器
 
 @Pipe({
-  name: 'suffixPipe' // 必须有name属性, 使用时此名字
+  name: 'suffixPipe' // 必须有name属性, 使用时用此名字
 })
 
 export class SuffixPipe {
@@ -299,7 +299,7 @@ export class SuffixPipe {
 + 在 app.module.ts 中声明
 
 + 使用 
-```
+```javascript
 {{ do.thing | suffixPipe }}
 
 // 传参
@@ -329,35 +329,36 @@ export class SuffixPipe {
 
 + 使用
   - 创建文件
-  ```
+  ```javascript
   import { Injectable } from '@angular/core';
-
+  
   // 方式一： 在本文件中声明
   //  创建的服务是‘单例的’，不论多少组件使用，只创建一个实例
   @Injectable({
     providedIn: 'root'
   })
-
+  
   export class LogService {
     constructor() { }
   }
-
+  
   // 方式二 或者在app.module.ts中
+  // 创建的服务也是‘单例的’，
   providers: [LogService]
-
+  
   // 方式三 在引入的页面声明
   //  每个组件的服务对象都是新建的
-  @Injectable()
-
+  @Injectable() // 本文件中
+  // 使用的文件中
   @Component({
     provides: [logService]
   })
   ```
 
   -  在页面中引入使用
-  ```
+  ```javascript
   import { LogService } from 'src/app/log/LogService';
-
+  
   constructor(log: LogService) {
     this.log = log
   }
@@ -368,15 +369,66 @@ export class SuffixPipe {
   + 也就是数据请求的api，类似于axios
   + 使用
     1. 在app.module中引入
-    ```
+    ```javascript
     import { HttpClientModule } from '@angular/common/http'
     
     imports: [HttpClientModule]
     ```
     2. 在使用的地方引入
-    ```
+    ```javascript
     import { HttpClient } from '@angular/common/http';
     constructor(http: HttpClient) {
       this.http = http
     }
     ```
+
+## 声明周期
+
+1. constructor 组件创建时就会调用
+2. ngOnChanges 组件绑定的属性值发生改变时
+3. ngOninit 组件初始化完毕
+4. ngDoCheck 检测，并在发生 Angular 无法或不愿意自己检测的变化时作出反应
+5. ngAfterContentInit 组件的内容初始化完成时
+    ```javascript
+    <p>content</p>
+   ```
+6. ngAfterContentChecked 组件的内容发生变化进行检查
+7. ngAfterViewInit 组件的视图初始化完成
+8. ngAfterViewChecked 组件的视图发生变化进行检查
+     ```javascript
+    template: 'view'
+   ```
+9. ngOnDestroy 组件即将卸载时调用
+
+
+
+# ts
+
+### 访问修饰符
+
+ts对属性和方法定义了三种访问修饰符
+
++ private 私有的，私有成员只能在类的内部使用
++ protected 受保护的，被保护的成员只能在本类及其子类中使用
++ public 公共的，可以在类及外部使用
+
+*ps：一般情况下，class内属性不应该让外界访问，设为 priate；暴露出允许调用的方法，设为public*
+
+### 访问修饰符特殊写法
+``` javascript
+class Student {
+
+  constructor(private: name:string) {
+    this.name = name
+  }
+}
+
+// 等同于
+class Student {
+  private name:string
+  constructor(name:string) {
+    this.name = name
+  }
+}
+
+```

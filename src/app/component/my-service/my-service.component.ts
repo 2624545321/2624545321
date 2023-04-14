@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LogService } from 'src/app/log/LogService';
 import { TimerService } from 'src/app/log/TimerService';
 
@@ -9,12 +9,13 @@ import { TimerService } from 'src/app/log/TimerService';
   styleUrls: ['./my-service.component.scss'],
   providers: [TimerService]
 })
-export class MyServiceComponent {
+export class MyServiceComponent implements OnInit {
 
   // log = new LogService()
   log
   http
   isLoading = false
+
   tableIpt: string = ''
 
   tableData: any[] = []
@@ -77,7 +78,7 @@ export class MyServiceComponent {
 
   handleLogin() {
     this.timerService.timeStart()
-    for(let i = 0; i < 10000000; i ++){
+    for (let i = 0; i < 10000000; i++) {
       Math.random() * 100 + 80
     }
     this.timerService.timeEnd('登录')
@@ -85,9 +86,47 @@ export class MyServiceComponent {
 
   handleRegister() {
     this.timerService.timeStart()
-    for(let i = 0; i < 10000000; i ++){
+    for (let i = 0; i < 10000000; i++) {
       Math.random() * 100 + 80
     }
     this.timerService.timeEnd('注册')
+  }
+
+
+
+  /** 
+   * 声明周期函数
+   * */
+
+  ngOnInit(): void {
+    console.log('ngOnInit')
+  }
+
+  ngOnChanges(changes: any) {
+    console.log('ngOnChanges', changes)
+  }
+
+  ngDoCheck() {
+    console.log('ngDoCheck')
+  }
+
+  ngAfterContentInit() {
+    console.log('ngAfterContentInit')
+  }
+
+  ngAfterContentChecked() {
+    console.log('ngAfterContentChecked')
+  }
+
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit')
+  }
+
+  ngAfterViewChecked() {
+    console.log('ngAfterViewChecked')
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy')
   }
 }

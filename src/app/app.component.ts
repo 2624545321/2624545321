@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'myng01'
+
+  destroy = false
+
+  comdestroy() {
+    this.destroy = true
+  }
 }
