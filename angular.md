@@ -84,7 +84,7 @@
   + 定义组件文件时一般写成 [name].component.ts|html|css 的写法
   + 一般一个页面由 html css ts 三个文件组成
 
-## 创建组件指令
+### 创建组件的快捷指令
   + angular 提供了创建自定义组件的命令
 
   ```
@@ -143,7 +143,8 @@
 
 ## 指令
 
-#### 预定义指令
+### 预定义指令
+
 #### *ngIf
 
 - 默认写法
@@ -226,13 +227,17 @@
 + 进行需要的操作
 
 
-#### 指令总结
+### 指令总结
 指令可分为三类
 
 1. 组件指令（自定义指令）：Component(装饰器) 继承至 Directive(装饰器)
 2. 结构型指令：会影响dom结构，必须使用 * 开头 => *ngIf、*ngFor
 3. 属性型指令：不会影响dom结构，但会影响元素的外观或者行为。必须用 []，=> ngClass、ngStyle
 
+## angular的修饰符
++ ```[] {{}}``` 中的内容一般为变量
++ () 的内容一般为事件绑定
++ * 一般用来修饰指令
 
 ### 双向数据绑定 [(ngModel)]
 
@@ -382,10 +387,10 @@ export class SuffixPipe {
     }
     ```
 
-## 声明周期
+## 生命周期
 
 1. constructor 组件创建时就会调用
-2. ngOnChanges 组件绑定的属性值发生改变时
+2. ngOnChanges 组件绑定的属性值发生改变时（一般是双向数据绑定的值）
 3. ngOninit 组件初始化完毕
 4. ngDoCheck 检测，并在发生 Angular 无法或不愿意自己检测的变化时作出反应
 5. ngAfterContentInit 组件的内容初始化完成时
@@ -400,7 +405,70 @@ export class SuffixPipe {
    ```
 9. ngOnDestroy 组件即将卸载时调用
 
+## 父子组件通信
 
+### 父 => 子
+```javascript
+// 父组件定义数据
+protected nickName: string = ''
+
+<app-show-nick-name [userNk]="nickName"></app-show-nick-name>
+
+// 子组件声明属性
+@input()  // 此装饰器用来声明属性为输入型属性
+userNk: string = ''
+
+<p>{{ userNk }}</p>
+
+```
+
+### 子 => 父
+
++ 子组件通过触发特定的事件，传递给父组件，父组件提供事件处理的方法来接收数据
+
+```javascript
+// 子组件定义事件发射器
+@Output()
+protected handleUpdateNkName = new EventEmitter()
+
+// 触发事件
+this.handleUpdateNkName.emit({ // 发送数据
+  val: this.modifyNkname 
+})
+
+// 父组件接收子组件的事件
+app-edit-nick-name (handleUpdateNkName)="updateNkName($event)"></app-edit-nick-name>
+
+// 接受数据
+updateNkName(e: profile):void {
+  // console.log(e)
+  this.nickName = e.val
+}
+```
+*($event) 是内置的模板变量，接受数据只能写成这个*
+
+### 父组件 => 子组件简便方法
+
++ 使用 # 为组件声明识别标识符，类似于vue的 $refs
+  ```javascript
+   <div #blog class="blog"></div>
+
+    @ViewChild('blog', { static: true }) 
+    // static 元素是否是静态的 *ngIf/ngFor
+    private blog: any
+    @ViewChild('editNk', { static: true })
+    private editNk: any
+    @ViewChild('showNk', { static: true })
+    private showNk: any
+
+    // 访问
+    ngOnInit(): void {
+      console.log(this.blog)
+      console.log(this.editNk)
+      console.log(this.showNk)
+    }
+  ```
+  
 
 # ts
 
