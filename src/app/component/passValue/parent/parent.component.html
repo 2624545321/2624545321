@@ -1,6 +1,7 @@
-<div class="blog">
-  <h3>欢迎您：xxx</h3>
-
-  <app-show-nick-name></app-show-nick-name>
-  <app-edit-nick-name></app-edit-nick-name>
+<div #blog class="blog">
+  <h3>欢迎您：{{ nickName }}</h3>
+ 
+  
+  <app-edit-nick-name #editNk (handleUpdateNkName)="updateNkName($event)"></app-edit-nick-name>
+  <app-show-nick-name #showNk [userNk]="nickName"></app-show-nick-name>
 </div>  

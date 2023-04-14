@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-edit-nick-name',
@@ -6,5 +6,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./edit-nick-name.component.scss']
 })
 export class EditNickNameComponent {
+  protected modifyNkname = ''
+
+  @Output()
+  protected handleUpdateNkName = new EventEmitter()
+
+  handleModiftNkname(): void {
+    // console.log()
+    this.handleUpdateNkName.emit({
+      val: this.modifyNkname
+    })
+  }
+
 
 }

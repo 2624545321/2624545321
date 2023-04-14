@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-show-nick-name',
@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./show-nick-name.component.scss']
 })
 export class ShowNickNameComponent {
+  @Input()
+  userNk: string = ''
 
+  ngOnChanges() {
+    console.log('ngOnChanges ')
+  }
 }
