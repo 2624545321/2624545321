@@ -469,6 +469,97 @@ updateNkName(e: profile):void {
     }
   ```
   
+## 路由
+
+### 基本使用
+
+#### 定义‘路由词典’
+```typescript
+const routes: Routes = [
+  // 空路由 component 匹配
+  // { path: '', component: IndexComponent },
+   // 空路由 redirectTo 匹配
+  { path: '', pathMatch: "full", redirectTo: 'index' },
+  // 页面路由
+  { path: 'index', component: IndexComponent },
+  { path: 'product/List', component: ProductListComponent },
+  { path: 'productDetail', component: ProductDetailComponent },
+  { path: 'userCenter', component: UserCenterComponent },
+  // 通配符, 匹配 404 页面
+  { path: '**', component: NotFoundPageComponent }
+]
+```
+
+#### 引入路由模块并注册
+
+```js
+import { RouterModule } from '@angular/router';
+
+imports: [RouterModule.forRoot(routes)];
+```
+
+#### 挂载
++ 创建路由挂载点 => 路由出口
+
+```html  
+<router-outlet></router-outlet>
+```
+
+#### 注意事项
+
+1. 路由词典中的根路由地址不能以 / 开头或结尾，中间可以包含 /
+2. 路由词典匹配任意路径时应该写在最后，因为匹配路由时的顺序是从上到下的
+3. 声明路由时应定义路由类型，否则 redirectTo 属性会有问题
+ ``` routes: Routes[] ```
+
+### 路由跳转
+
+#### 模板跳转
+
+```html
+<div routerLink="/productList">商品列表</div>
+```
++ routerLink属性可以用于任意标签
++ 地址必须是绝对路径
+
+#### js 跳转
+```js
+  // 声明依赖
+  constructor(private router: Router) {
+  }
+
+  //  实现跳转
+  protected switchPage() {
+    this.router.navigateByUrl('/productList')
+  }
+```
++ Router 类是RouterModule提供的一个服务类，声明依赖即可使用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ts
 
