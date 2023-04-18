@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent {
+  
+
+
   constructor(private router: Router) {
 
   }

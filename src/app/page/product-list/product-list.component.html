@@ -1,1 +1,16 @@
 <p>product-list works!</p>
+<ul>
+  <!-- <button routerLink="/index" routerLinkActive="active">首页</button> -->
+  <li routerLink="/productDetail">商品1</li>
+  <!-- <li routerLink="/productDetail" [queryParams]="{pid: 1}">商品1</li> -->
+  <li routerLink="/productDetail/2">商品2</li>
+  <li routerLink="/productDetail/3">商品3</li>
+  <!-- [routerLink]="['/productDetail', { pid: p.id, foo: 'bar' }]" -->
+  <li
+    *ngFor="let p of prodList; index as i"
+    [routerLink]="['/productDetail', p.id]"
+    
+  >
+    {{ p.name }} 顺序： {{ i }}
+  </li>
+</ul>

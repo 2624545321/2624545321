@@ -1,5 +1,8 @@
 # angular
 
+## 官网
+https://angular.cn/
+
 ## 启动项目
 
 + npm i -g @ng/cli
@@ -321,18 +324,18 @@ export class SuffixPipe {
 
 ## 服务和依赖注入
 
-+ 创建对象的两种方式
+### 创建对象的两种方式
   1. 手动创建 const o = new Object()
   2. 依赖注入式 无需自己 new ，只需要声明依赖
 
-+ 抽象&重点
+### 抽象&重点
    - Service（服务）：, angular认为；组件是与用户交互的一中对象，其中的内容都应该与用户操作有关系；而与用户操作无关的内容都应该剥离出去，放在‘服务对象’中，为组件服务；例如：系统日志、即使统计、数据服务器的访问
 
-+ 创建服务
+### 创建服务
 
    - ``` ng g/generate service [name]  ```
 
-+ 使用
+### 使用
   - 创建文件
   ```javascript
   import { Injectable } from '@angular/core';
@@ -364,10 +367,16 @@ export class SuffixPipe {
   ```javascript
   import { LogService } from 'src/app/log/LogService';
   
+  pravite log
   constructor(log: LogService) {
     this.log = log
   }
+
+  // 简单写法
+  constructor(pravite log: LogService) {
+  }
   ```
+  - 使用简写时，只要声明了变量，变量的依赖就会自动注入，无需再自己赋值
 
 ### HttpClient
   + Angular 提供的一个网络访问服务
@@ -482,9 +491,22 @@ const routes: Routes = [
   { path: '', pathMatch: "full", redirectTo: 'index' },
   // 页面路由
   { path: 'index', component: IndexComponent },
-  { path: 'product/List', component: ProductListComponent },
   { path: 'productDetail', component: ProductDetailComponent },
-  { path: 'userCenter', component: UserCenterComponent },
+  // 有子路由，父组件需要在 declarations 中声明
+  { 
+    path: 'userCenter', 
+    component: UserCenterComponent 
+    // 定义子路由
+    children: [
+      {
+        path: '',
+        redirectTo: 'info',
+        pathMatch: 'full'
+      },
+      { path: 'info', component: InfoComponent },
+      { path: 'avatar', component: AvatarComponent, }
+    ]
+  },
   // 通配符, 匹配 404 页面
   { path: '**', component: NotFoundPageComponent }
 ]
@@ -511,6 +533,8 @@ imports: [RouterModule.forRoot(routes)];
 2. 路由词典匹配任意路径时应该写在最后，因为匹配路由时的顺序是从上到下的
 3. 声明路由时应定义路由类型，否则 redirectTo 属性会有问题
  ``` routes: Routes[] ```
+4. 定义子路由时，有子路由的模块需要在 app.module 中的 declarations 中声明, **并且在模板中使用 ```<router-outlet></router-outlet>```**
+5. 如果在路由页面使用angular的语法，则必须在 declarations 中声明
 
 ### 路由跳转
 
@@ -531,15 +555,50 @@ imports: [RouterModule.forRoot(routes)];
   //  实现跳转
   protected switchPage() {
     this.router.navigateByUrl('/productList')
+    // 携带参数跳转 
+    this.router.navigate(url, {
+      state: { custom: 'true' },
+      queryParams: { path: url[0], isBoo: 'false' }
+    } )
   }
 ```
 + Router 类是RouterModule提供的一个服务类，声明依赖即可使用
 
 
+### 路由传参
 
+1. query传参
+```htm
+<li routerLink="/productDetail" [queryParams]="{pid: 1}">商品1</li>
+```
 
+2. params 传参
+```htm
+<li routerLink="/productDetail/1">商品1</li>
+// 动态传参
+<li [routerLink]="['/productDetail', p.id]"></li>
+```
++ 需要在路由词典中声明使用的参数
+```js
+{ path: 'productDetail/:pid', component: ProductDetailComponent },
+```
 
+3. 接收参数
+```js
+  constructor(private route: ActivatedRoute) {
+  }
 
+  ngOnInit() {
+    // 接收 queryParams
+    this.route.queryParams.subscribe(params => {
+      this.serial = params['pid']
+    })
+    // 接收 params
+    this.route.params.subscribe(params => {
+      this.serial = params['pid']
+    })
+  }
+```
 
 
 

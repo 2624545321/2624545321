@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http'
-import { RouterModule, Routes } from '@angular/router';
+// import { RouterModule, Routes } from '@angular/router';
+import { AppRoutingModule } from './router/app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // pipe
 import { NeedStrongDirective } from './directive/need-strong.directive';
 import { SuffixPipe } from './pipe/suffix';
@@ -18,23 +20,12 @@ import { MyServiceComponent } from './component/my-service/my-service.component'
 import { ParentComponent } from './component/passValue/parent/parent.component';
 import { EditNickNameComponent } from './component/passValue/edit-nick-name/edit-nick-name.component';
 import { ShowNickNameComponent } from './component/passValue/show-nick-name/show-nick-name.component';
+
 // page
 import { IndexComponent } from './page/index/index.component';
 import { ProductListComponent } from './page/product-list/product-list.component';
 import { ProductDetailComponent } from './page/product-detail/product-detail.component';
-import { UserCenterComponent } from './page/user-center/user-center.component';
-import { NotFoundPageComponent } from './page/not-found-page/not-found-page.component';
 
-
-const routes: Routes = [
-  // { path: ' ', redirectTo: 'index', pathMatch: 'prefix' },
-  { path: '', pathMatch: "full", redirectTo: 'index' },
-  { path: 'index', component: IndexComponent },
-  { path: 'product/List', component: ProductListComponent },
-  { path: 'productDetail', component: ProductDetailComponent },
-  { path: 'userCenter', component: UserCenterComponent },
-  { path: '**', component: NotFoundPageComponent }
-]
 // {path: '', component: IndexComponent},
 @NgModule({
   declarations: [
@@ -57,8 +48,9 @@ const routes: Routes = [
     IndexComponent,
     ProductListComponent,
     ProductDetailComponent,
-    UserCenterComponent,
-    NotFoundPageComponent
+    // UserCenterComponent,
+    // NotFoundPageComponent
+
   ],
   imports: [
     // 浏览器模块导出了 CommonModule，
@@ -67,7 +59,10 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     // 导入路由模块，并注册路由词典，用于根模块中
-    RouterModule.forRoot(routes)
+    // RouterModule.forRoot(routes),
+    AppRoutingModule,
+    // 动画
+    // BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
