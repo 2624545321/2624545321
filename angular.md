@@ -600,12 +600,63 @@ imports: [RouterModule.forRoot(routes)];
   }
 ```
 
+### 路由守卫
+
+#### 作用
+
+任何用户在任何时候都可以导航到任何地方，但这是不对的
++ 该用户可能无权导航到目标组件
++ 用户需要先登录（认证）
++ 在显示目标组件之前，可能需要获取某些数据
++ 在离开组件前，可能需要先保存修改
++ 用户是否需要保存此次修改
++ 在路由配置中添加守卫，来处理这些场景 
+
+#### 创建
++ 指令创建 ```ng g guard [name]```
+
+```js
+import {CanActivate} from "@angular/router";
+import {Injectable} from "@angular/core";
+// 依赖注入
+@Injectable({
+  providedIn: 'root'
+})
+export class GuardLogin implements CanActivate{
+  private isLogin:boolean = true
+  constructor() {
+  }
+  canActivate(): boolean {
+    if (this.isLogin) {
+      return true
+    } else {
+      window.alert('您当前还未登录')
+      return false
+    }
+  }
+}
+```
+
+#### 使用
++ 在路由词典中
+```js
+ {
+    path: 'userCenter',
+    component: UserCenterComponent,
+    canActivate: [GuardLogin, GuardTime],
+ }  
+```
++ 声明的守卫会按照顺序进行条件判断，只有当所有条件都符合时才会进行页面的跳转
++ 守卫返回一个值，以控制路由器的行为
+  - true 导航继续
+  - false 导航终止，且用户停留在原地
+  - UrlTree 取消当前的导航，并且开始导航到返回的这个 UrlTree
 
 
-
-
-
-
+## 资源
++ awesome angular 
++ awesome vue
++ awesome react
 
 
 
