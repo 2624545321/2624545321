@@ -139,10 +139,25 @@ https://angular.cn/
   
 
 ### 事件绑定
- ```
+ ```js
 <button (click)="handleCount()">+</button>
+<button (dblclick)="handleCount($event)">+</button>
  ```
-*函数必须有 **()***
++ $event是内置的变量，我们可以直接使用
+
+*函数必须有 **()***  
+
+#### 键盘事件
+
++ 可以指定要绑定到键盘事件的键值或代码
++ 它们的 `key` 和 `code` 字段是浏览器键盘事件对象的原生部分
+
+```js
+(keydown.enter)="handleAddTodo()"
+<input (keydown.shift.t)="onKeydown($event)" />
+```
+
+键值参考:  *https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values*
 
 ## 指令
 
@@ -189,6 +204,17 @@ https://angular.cn/
 ```
 
 #### ngClass
+
+##### 绑定到单个 CSS
+
+```js
+[class.completed]="todo.completed"
+[class.sale]="onSale"
+[class.类名]="condition"
+```
+
+##### 绑定到多个 CSS 类
+
 + CSS 类会根据表达式求值结果进行更新，更新逻辑取决于结果的类型
 
 + string - 会把列在字符串中的 CSS 类（空格分隔）添加进来，
@@ -287,7 +313,6 @@ imports: [
 ## pipe
 *管道，同vue的过滤器*
 
-+ 
 ```javascript
 import { Pipe } from "@angular/core"; // 引入装饰器
 
@@ -346,6 +371,7 @@ export class SuffixPipe {
     providedIn: 'root'
   })
   
+  
   export class LogService {
     constructor() { }
   }
@@ -377,6 +403,9 @@ export class SuffixPipe {
   }
   ```
   - 使用简写时，只要声明了变量，变量的依赖就会自动注入，无需再自己赋值
+  - 'root'：在大多数应用程序中是指应用程序级注入器
+  - 'platform' ：页面上所有应用程序共享的平台注入器的特殊单例
+  - 'any'：在每个惰性加载的模块中提供一个唯一的实例，而所有急性加载的模块共享一个实例。
 
 ### HttpClient
   + Angular 提供的一个网络访问服务
@@ -461,7 +490,7 @@ updateNkName(e: profile):void {
 + 使用 # 为组件声明识别标识符，类似于vue的 $refs
   ```javascript
    <div #blog class="blog"></div>
-
+  
     @ViewChild('blog', { static: true }) 
     // static 元素是否是静态的 *ngIf/ngFor
     private blog: any
@@ -469,7 +498,7 @@ updateNkName(e: profile):void {
     private editNk: any
     @ViewChild('showNk', { static: true })
     private showNk: any
-
+  
     // 访问
     ngOnInit(): void {
       console.log(this.blog)
