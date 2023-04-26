@@ -1,0 +1,15 @@
+<header class="common-layout d-flex flex-ju-sb">
+  <a class="fs-20 color-theme" routerLink="/setting">
+    <!-- conduit -->
+    文章家园
+  </a>
+
+  <ul class="login d-flex">
+    <li *ngFor="let nav of navLink">
+      <a class="fs-20 color-subTheme" [href]="nav.path">
+        {{ nav.label }}
+      </a>
+    </li>
+  </ul>
+
+</header>

@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+ul, ol, li {
+  list-style: none;
+}
+
+
+// flex
+.d-flex {
+  display: flex;
+}
+
+.flex-ju-sb {
+  justify-content: space-between;
+}
+
+.flex-a-c {
+  align-items: center;
+}
+
+// 字体大小
+.fs-20 {
+  font-size: 20px;
+}
+
+// 字体颜色
+.color-theme {
+  color: var(--color-theme);
+}
+
+.color-subTheme {
+  color: var(--color-subTheme);
+}
+
+.color-white {
+  color: var(--color-white);
+}
+
+.color-article-title {
+  color: var(--article-title);
+}
+
+.color-article-desc {
+  color: var(--article-desc);
+}
+
+
+// 背景颜色
+.bacc-theme {
+  background-color: var(--color-theme);
+}
+
+
+.common-layout {
+  width: 1200px;
+  margin: auto;
+}
+
+// text
+.text-center {
+  text-align: center;
+}
