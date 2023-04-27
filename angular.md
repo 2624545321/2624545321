@@ -674,6 +674,7 @@ export class GuardLogin implements CanActivate{
     component: UserCenterComponent,
     canActivate: [GuardLogin, GuardTime],
  }  
+ 
 ```
 + 声明的守卫会按照顺序进行条件判断，只有当所有条件都符合时才会进行页面的跳转
 + 守卫返回一个值，以控制路由器的行为
@@ -682,15 +683,162 @@ export class GuardLogin implements CanActivate{
   - UrlTree 取消当前的导航，并且开始导航到返回的这个 UrlTree
 
 
-## 资源
+## github上好的框架资源
 + awesome angular 
 + awesome vue
 + awesome react
 
+## 模块化开发
+
+### 模块目录
+```text
+      |-- app
+        |   |-- app-routing.module.ts // 主路由导入模块路由
+        |   |-- app.component.html
+        |   |-- app.component.ts
+        |   |-- app.module.ts // 主模块
+        |   |-- auth // 权限模块
+        |   |   |-- auth-routing.module.ts // 路由模块
+        |   |   |-- auth.component.html
+        |   |   |-- auth.component.ts
+        |   |   |-- auth.module.ts // 模块导入自己的路由，模板
+        |   |-- home // 主页模块
+        |   |   |-- home-routing.module.ts  // 路由模块
+        |   |   |-- home.component.css
+        |   |   |-- home.component.html
+        |   |   |-- home.component.ts
+        |   |   |-- home.module.ts // 模块导入自己的路由，模板
+```
+
+### 构建流程
++ 每个模块享有自己的模板，路由，模块之间互不干扰
++ 每个模块（module.ts）导入自己的路由模块
++ 主路由引入每个模块，建立路由连接
++ app.module.ts 导入主路由
++ 如果是一加载页面模块就要启动，可以直接在app.module中导入
+  + 如 首页，公用模块
+
+### 模块
+
+#### 主模块
+**AppModule**
+```angularjs
+// 根组件
+import { HomeModule } from './home/home.module';
+// 路由
+import { AppRoutingModule } from './app.routing.module';
+
+@NgModule({
+  imports: [
+    // 直接导入模块
+    HomeModule,
+    // 路由导入模块
+    AppRoutingModule,
+    // 公用导入模块
+    CustomCommonModule
+  ],
+})
+export class AppModule { }
+```
+
+#### 子模块
+```angularjs
+@NgModule({
+  imports: [
+    HomeRoutingModule, // 导入路由模块
+    HttpClientModule // 导入http 请求
+  ],
+  declarations: [
+    HomeComponent // 导入模板
+  ]
+})
+export class HomeModule {
+  constructor() {}
+}
+```
++ 本模块需要用到什么模块就导入什么模块
+
+#### 公用模块
++ 公用模块放的一般是组件，封装的请求，service，interceptor
++ 每个模块都有一个 index.ts 文件，用来暴露本级模块定义的class
++ 依次递归导出，最终都会由最外层的index.ts导出
+```text
+    |-- core
+        |   |   |-- core.module.ts
+        |   |   |-- index.ts // 最终导出
+        |   |   |-- interceptors
+        |   |   |   |-- http.token.interceptor.ts
+        |   |   |   |-- index.ts // 导出本级的所有文件
+        |   |   |-- models
+        |   |   |   |-- index.ts // 导出本级的所有文件
+        |   |   |   |-- profile.model.ts
+        |   |   |   |-- user.model.ts
+```
++ core.module.ts
+```angularjs
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from "@angular/common/http";
+import { NgModule } from "@angular/core";
+import { MockInterceptor } from "./interceptor";
+import { CommonModule } from "@angular/common";
+@NgModule({
+  imports: [CommonModule, HttpClientModule],
+  providers: [
+    { 
+      provide: HTTP_INTERCEPTORS, // 提供http拦截器
+      useClass: MockInterceptor, // 使用拦截器的 class
+      multi: true
+    }
+  ]
+})
+export class CustomCommonModule {}
+```
++ index.ts
+```angularjs
+// 把每个模块暴露出去
+export * from './layout'
+export * from './util'
+export * from './models'
+```
++ 在 app.module中引入，即可实现公共模块使用
 
 
+### 路由
 
-
+#### 主路由
+**AppRoutingModule**
+```angularjs
+import { RouterModule, Routes } from "@angular/router";
+import { HomeComponent } from "./home.component";
+import { NgModule } from "@angular/core";
+const routes: Routes = [
+  {
+    path: 'setting',
+    // 实现路由懒加载 => 加载每个模块
+    loadChildren: () => import('./settings/setting.module').then(m => m.SettingModule)
+  },
+]
+})
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+#### 子路由
+**HomeRoutingModule**
+```angularjs
+const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent
+  }
+]
+export class HomeRoutingModule {}
+```
++  如果在主路由导入，那么此时的路由访问路径为
+   127.0.0.1:4000/setting/home
++  如果不在主路由导入，直接在 app.module中导入，那么路径为
+    127.0.0.1:4000/home
 
 
 
