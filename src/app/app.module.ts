@@ -10,6 +10,10 @@ import { AppRoutingModule } from './app.routing.module';
 // 模块
 import { AppFooterComponent, AppHeaderComponent } from './common';
 import { AuthModule } from './auth/auth.module';
+import { CustomCommonModule } from './common/custom.common.module';
+// mock
+import './../mock/home.js'
+
 
 @NgModule({
   declarations: [
@@ -19,10 +23,14 @@ import { AuthModule } from './auth/auth.module';
   ],
   imports: [
     BrowserModule,
-    ElModule.forRoot(),
+    ElModule.forRoot(), // element
+    // 各个子模块
     HomeModule,
+    AuthModule,
+    // 路由
     AppRoutingModule,
-    AuthModule
+    // 公用
+    CustomCommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

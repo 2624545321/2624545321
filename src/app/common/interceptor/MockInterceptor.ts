@@ -7,6 +7,8 @@ import { Observable } from "rxjs";
 
 export class MockInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log(11111, req)
+    console.log(1111111, next)
     return next.handle(req);
   }
 }
