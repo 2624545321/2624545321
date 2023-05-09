@@ -1,0 +1,12 @@
+<input type="text" [(ngModel)]="addIpt"> 
+<button (click)="addTodo()">添加待办</button>
+
+<ul>
+  <li *ngFor="let do of list; let i = index">
+    {{ i + 1 }}  {{ do.thing | suffixPipe: 'foo': 'bar' }}
+
+    <input type="text" [(ngModel)]="do.ipt">
+
+    <button (click)="handleDel(i)">删除</button>
+  </li>
+</ul>

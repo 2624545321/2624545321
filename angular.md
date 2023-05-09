@@ -138,33 +138,33 @@
 
 ### 指令绑定
 
-  #### *ngIf
-  
-  - 默认写法
-    ```
-    <div *ngIf="condition"></div>
-    ```
-  - else
-    ```
-      <div *ngIf="condition; else elseBlock"></div>
-    ```  
-  - then => 为 true 时内容显示区域
-    ```
-      <div *ngIf="condition; then thenBlock else elseBlock"></div>
-      <ng-template #thenBlock>Content true</ng-template>
-      <ng-template #elseBlock>Content false.</ng-template>
-    ```  
-  - as 本地存储值的形式: condition的值赋值给 value
-    ```
-      <div *ngIf="condition as value; else elseBlock">{{value}}</div>
-      <ng-template #elseBlock>Content to render when value is null.</ng-template>
-    ```
+#### *ngIf
 
- *condition为 false 元素直接在dom中移除* 
+- 默认写法
+  ```
+  <div *ngIf="condition"></div>
+  ```
+- else
+  ```
+    <div *ngIf="condition; else elseBlock"></div>
+  ```  
+- then => 为 true 时内容显示区域
+  ```
+    <div *ngIf="condition; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>Content true</ng-template>
+    <ng-template #elseBlock>Content false.</ng-template>
+  ```  
+- as 本地存储值的形式: condition的值赋值给 value
+  ```
+    <div *ngIf="condition as value; else elseBlock">{{value}}</div>
+    <ng-template #elseBlock>Content to render when value is null.</ng-template>
+  ```
+
+*condition为 false 元素直接在dom中移除* 
 
 #### *ngFor
 ```
- <!-- <li *ngFor="let item of list; index as i"> -->
+<!-- <li *ngFor="let item of list; index as i"> -->
   <li *ngFor="let item of list; let i = index">
     {{ i + 1 }} {{ item }}
   </li>
@@ -213,7 +213,22 @@
 
 ```
 
-## 双向数据绑定 [(ngModel)]
+#### 自定义指令
++ ng generate directive [name]
+
+
++ 进行需要的操作
+
+
+#### 指令总结
+指令可分为三类
+
+1. 组件指令（自定义指令）：Component(装饰器) 继承至 Directive(装饰器)
+2. 结构型指令：会影响dom结构，必须使用 * 开头 => *ngIf、*ngFor
+3. 属性型指令：不会影响dom结构，但会影响元素的外观或者行为。必须用 []，=> ngClass、ngStyle
+
+
+### 双向数据绑定 [(ngModel)]
 
 + mvvm
 
@@ -231,4 +246,60 @@ import { FormsModule } from '@angular/forms';
 imports: [
   FormsModule
 ],
+```
+
+4. 
+
+```
+  单个输入框绑定
+    <input type="text" [(ngModel)]="myIpt">
+
+  作为表单元素绑定
+    <form action="" #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <input name="ipt" type="text" required ngModel #iptVal="ngModel">
+      <input type="button" value="submit">
+    </form>
+
+    onSubmit(f: NgForm) {
+      console.log(f.value);  // { first: '', last: '' }
+      console.log(f.valid);  // false
+    }
+```
+
+5. 事件监听
+  ngModelChange 在数据更新时触发
+
+
+## pipe
+*管道，同vue的过滤器*
+
++ 
+```
+import { Pipe } from "@angular/core"; // 引入装饰器
+
+@Pipe({
+  name: 'suffixPipe' // 必须有name属性, 使用时此名字
+})
+
+export class SuffixPipe {
+  // 用来处理逻辑的函数
+  transform(v: string) {
+    return v + 'hhhhhh'
+  }
+}
+
+```
+
++ 在 app.module.ts 中声明
+
++ 使用 
+```
+{{ do.thing | suffixPipe }}
+
+// 传参
+{{ do.thing | suffixPipe: 'foo' }}
+
+// 多个参数
+
+{{ do.thing | suffixPipe: 'foo' : 'bar' }}
 ```
